@@ -6,7 +6,7 @@ GUI elements for dual channel DC power supply as example for TFT_eSPI library an
 touch screen handling with XPT2046 or built-in touch screen of ILI9341 TFT panel.
 Also suitable for other TFT displays with touch screen like CYD ("Cheap Yellow Display", ESP32-2432S028R) 
 
-All elements are scalable and may be placed anywhere. Demo with display 320x240 px.
+All elements are scalable and may be placed anywhere. Demo with display 320x240 px. All GUI elements may be disabled/greyed out on command.
 
 ### Contains following classes:
 
