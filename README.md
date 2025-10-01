@@ -20,11 +20,11 @@ Scrolling Oscilloscope
 
 <img src=./doc/IMG_1057_resize.JPG/ width="500"/>
 
-Radio Button Group, Tab Control
+Checkbox, Radio Button Group, Tab Control
 
 <img src=./doc/IMG_1058_resize.JPG/ width="500"/>
 
-Checkbox, Checkbox Group, Slider/Trackbar, Tab Control
+Checkbox Group, Slider/Trackbar, Tab Control
 
 <img src=./doc/IMG_1060_resize.JPG/ width="500"/>
 
