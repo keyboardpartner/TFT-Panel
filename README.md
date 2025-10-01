@@ -13,27 +13,27 @@ All elements are scalable and may be placed anywhere. Demo with display 320x240 
 Button, Switch, LED indicator, Analog Meter,
 Numeric Display, Analog Bargraph hor. and vert. with Value Set 
 <p>
-<img src=./doc/IMG_1055_resize.JPG/ width="500"/>
-<img src=./doc/IMG_1056_resize.JPG/ width="500"/>
+<img src=./doc/IMG_1055_resize.JPG/ width="350"/>
+<img src=./doc/IMG_1056_resize.JPG/ width="350"/>
 </p>
 
 Scrolling Oscilloscope Chart
 <p>
-<img src=./doc/IMG_1057_resize.JPG/ width="500"/>
+<img src=./doc/IMG_1057_resize.JPG/ width="350"/>
 </p>
 
 Checkbox, Radio Button Group, Tab Control, Numeric Entry with rotary encoder or numeric keypad, Checkbox Group, Slider/Trackbar, Tab Control
 <p>
-<img src=./doc/IMG_1058_resize.JPG/ width="500"/>
-<img src=./doc/IMG_1060_resize.JPG/ width="500"/>
+<img src=./doc/IMG_1058_resize.JPG/ width="350"/>
+<img src=./doc/IMG_1060_resize.JPG/ width="350"/>
 </p>
 
 Numeric Keypad, Dialog Box, Menu List, Analog Clock
 <p>
-<img src=./doc/IMG_1062_resize.JPG/ width="500"/>
-<img src=./doc/IMG_1054_resize.JPG/ width="500"/>
-<img src=./doc/IMG_1061_resize.JPG/ width="500"/>
-<img src=./doc/IMG_1059_resize.JPG/ width="500"/>
+<img src=./doc/IMG_1062_resize.JPG/ width="350"/>
+<img src=./doc/IMG_1054_resize.JPG/ width="350"/>
+<img src=./doc/IMG_1061_resize.JPG/ width="350"/>
+<img src=./doc/IMG_1059_resize.JPG/ width="350"/>
 </p>
 
 
