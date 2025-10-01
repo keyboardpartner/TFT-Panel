@@ -10,15 +10,11 @@ Also suitable for other TFT displays with touch screen like CYD ("Cheap Yellow D
 
 Contains following classes:
 
-Button
-Switch
-LED indicator
-Analog Meter
+Button, Switch, LED indicator, Analog Meter
 
 <img src=./doc/IMG_1055_resize.JPG/ width="500"/>
 
-Numeric Display
-Analog Bargraph hor. and vert.
+Numeric Display, Analog Bargraph hor. and vert.
 
 <img src=./doc/IMG_1056_resize.JPG/ width="500"/>
 
@@ -26,20 +22,15 @@ Scrolling Oscilloscope
 
 <img src=./doc/IMG_1057_resize.JPG/ width="500"/>
 
-Radio Button Group
-Tab Control
+Radio Button Group, Tab Control
 
 <img src=./doc/IMG_1058_resize.JPG/ width="500"/>
 
-Checkbox
-Checkbox Group
-Slider/Trackbar
-Tab Control
+Checkbox, Checkbox Group, Slider/Trackbar, Tab Control
 
 <img src=./doc/IMG_1060_resize.JPG/ width="500"/>
 
-Numeric Keypad
-Dialog Box
+Numeric Keypad, Dialog Box
 
 <img src=./doc/IMG_1062_resize.JPG/ width="500"/>
 <img src=./doc/IMG_1061_resize.JPG/ width="500"/>
