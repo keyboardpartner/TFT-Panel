@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="style.css" />
+	<title>Organ Analyzer</title>
+</head>
+
+<body>
+	<table>
+		<tr>
+			<td width="200px"><img src="logo.gif" alt="logo" /></td>
+			<td>
+				<h1 id="h1_msg">TFT Panel #0.01</h1>
+			</td>
+		</tr>
+	</table>
+	<form action="/get">
+		<input type="hidden" name="hascheckbox" id="hascheckbox" value="1" />
+		<table>
+			<tr>
+				<td>
+					<strong>Options</strong>
+				</td>
+				<td>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Your Router SSID<br />
+				</td>
+				<td>
+					<input style="width: 285px" type="text" name="ssid_sta" id="ssid_sta" maxlength="38" value="%STA_SSID%" />
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					Your Router Password<br />
+				</td>
+				<td>
+					<input style="width: 285px" type="text" name="pass_sta" id="passw_sta" maxlength="38"
+						value="%STA_PASSWORD%" />
+				</td>
+			</tr>
+
+			<tr>
+				<td>Speaker Click</td>
+				<td>
+					<label class="switch"><input type="checkbox" name="spkr_tick" id="spkr_tick" %SPKR_TICK% />
+						<span class="slider_sw"></span></label>
+				</td>
+			</tr>
+
+			<tr>
+				<td>Speaker Beep</td>
+				<td>
+					<label class="switch"><input type="checkbox" name="spkr_beep" id="spkr_beep" %SPKR_BEEP% />
+						<span class="slider_sw"></span></label>
+				</td>
+			</tr>
+			<tr>
+
+			<tr>
+				<td>
+					<span style="color: red"><strong>Store Data</strong></span>
+				</td>
+				<td>
+					<input class="btn_wide" type="submit" value="Speichern" />
+				</td>
+			</tr>
+		</table>
+	</form>
+	<li>
+		<br>
+		<a href='/scalings.html'>ADC Scalings and Offsets</a><br>
+		<a href='/update'>Update Panel Firmware</a><br>
+	</li>
+
+	<table>
+		<tr>
+			<td><br><strong>Directory</strong><small> on Panel Server</small></td>
+			<td></td>
+			<td></td>
+		</tr>
+		%DIRECTORY%
+	</table>
+	<li>
+		<br>
+	</li>
+	<li>
+		<br><strong>Upload File</strong><small> to Analyzer Server, Picture Size max.
+			320 x 240 Pixel</small><br><br>
+		<form method="POST" action="/upload" enctype="multipart/form-data">
+			<input style="height: 24px" id="fs" type="file" name="upload" />
+			<input style="height: 24px" id="upload" type="submit" value="Upload" />
+		</form><br>
+		<img src="splash.jpg" alt="splash" class="pagecenter" /><br>
+	</li>
+
+</body>
+
+</html>

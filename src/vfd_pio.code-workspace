@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		}
+	],
+	"settings": {
+		"arduino.commandPath": "",
+		"arduino.path": "C:\\Program Files (x86)\\Arduino",
+		"arduino.useArduinoCli": false,
+		"arduino.enableUSBDetection": true,
+		"arduino.clearOutputOnBuild": true
+	}
+}

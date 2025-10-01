@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="style.css" />
+	<title>TFT Panel</title>
+</head>
+
+<body>
+	<table>
+		<tr>
+			<td width="200px"><img src="logo.gif" alt="logo" /></td>
+			<td>
+				<h1 id="h1_msg">Offsets and Scalings</h1>
+			</td>
+		</tr>
+	</table>
+	<form action="/get">
+		<table>
+			<tr>
+				<td>
+					<strong>Raw Offset Amps ADC</strong>
+				</td>
+				<td></td>
+				<td>
+					<input style="width: 125px" type="number" name="adcOffsAmps" id="adcOffsAmps" maxlength="10"
+						value="%adcOffsAmps%" />
+				</td>
+			</tr>
+			<tr>
+				<td><strong>Meter A= Range</strong></td>
+				<td><strong>State</strong></td>
+				<td><strong>Scaling Value</strong></td>
+			</tr>
+			<tr>
+				<td>
+					<strong>#0 </strong>30mA DC
+				</td>
+				<td><strong>%ACTIVE_0%</strong></td>
+				<td>
+					<input style="width: 125px" type="text" name="adcScaling_0" id="adcScaling_0" maxlength="10"
+						value="%adcScaling_0%" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<strong>#1 </strong>100mA DC
+				</td>
+				<td><strong>%ACTIVE_1%</strong></td>
+				<td>
+					<input style="width: 125px" type="text" name="adcScaling_1" id="adcScaling_1" maxlength="10"
+						value="%adcScaling_1%" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<strong>#2 </strong>300mA DC
+				</td>
+				<td><strong>%ACTIVE_2%</strong></td>
+				<td>
+					<input style="width: 125px" type="text" name="adcScaling_2" id="adcScaling_2" maxlength="10"
+						value="%adcScaling_2%" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<strong>#3 </strong>1A DC
+				</td>
+				<td><strong>%ACTIVE_3%</strong></td>
+				<td>
+					<input style="width: 125px" type="text" name="adcScaling_3" id="adcScaling_3" maxlength="10"
+						value="%adcScaling_3%" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<strong>#4 </strong>3A DC
+				</td>
+				<td><strong>%ACTIVE_4%</strong></td>
+				<td>
+					<input style="width: 125px" type="text" name="adcScaling_4" id="adcScaling_4" maxlength="10"
+						value="%adcScaling_4%" />
+				</td>
+			</tr>
+
+			<tr>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>
+					<strong>Raw Offset Volts ADC</strong>
+				</td>
+				<td></td>
+				<td>
+					<input style="width: 125px" type="number" name="adcOffsVolts" id="adcOffsVolts" maxlength="10"
+						value="%adcOffsVolts%" />
+				</td>
+			</tr>
+			<tr>
+				<td><strong>Meter V= Range</strong></td>
+				<td><strong>State</strong></td>
+				<td><strong>Scaling Value</strong></td>
+			</tr>
+			<tr>
+				<td>
+					<strong>#5 </strong>1V DC
+				</td>
+				<td><strong>%ACTIVE_5%</strong></td>
+				<td>
+					<input style="width: 125px" type="text" name="adcScaling_5" id="adcScaling_5" maxlength="10"
+						value="%adcScaling_5%" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<strong>#6 </strong>3V DC
+				</td>
+				<td><strong>%ACTIVE_6%</strong></td>
+				<td>
+					<input style="width: 125px" type="text" name="adcScaling_6" id="adcScaling_6" maxlength="10"
+						value="%adcScaling_6%" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<strong>#7 </strong>10V DC
+				</td>
+				<td><strong>%ACTIVE_7%</strong></td>
+				<td>
+					<input style="width: 125px" type="text" name="adcScaling_7" id="adcScaling_7" maxlength="10"
+						value="%adcScaling_7%" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<strong>#8 </strong>30V DC
+				</td>
+				<td><strong>%ACTIVE_8%</strong></td>
+				<td>
+					<input style="width: 125px" type="text" name="adcScaling_8" id="adcScaling_8" maxlength="10"
+						value="%adcScaling_8%" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<strong>#9 </strong>100V DC
+				</td>
+				<td><strong>%ACTIVE_9%</strong></td>
+				<td>
+					<input style="width: 125px" type="text" name="adcScaling_9" id="adcScaling_9" maxlength="10"
+						value="%adcScaling_9%" />
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					<span style="color: red"><strong>Store Data</strong></span>
+				</td>
+				<td></td>
+				<td>
+					<input class="btn_wide" type="submit" value="Speichern" />
+				</td>
+			</tr>
+		</table>
+	</form>
+	<li><br>
+		<a href='/'>Main Page</a>
+	</li>
+
+</body>
+
+</html>
