@@ -28,9 +28,10 @@ Checkbox Group, Slider/Trackbar, Tab Control
 
 <img src=./doc/IMG_1060_resize.JPG/ width="500"/>
 
-Numeric Keypad, Dialog Box
+Numeric Keypad, Dialog Box, Menu List
 
 <img src=./doc/IMG_1062_resize.JPG/ width="500"/>
+<img src=./doc/IMG_1054_resize.JPG/ width="500"/>
 <img src=./doc/IMG_1061_resize.JPG/ width="500"/>
 
 Analog Clock
