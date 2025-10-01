@@ -1,6 +1,6 @@
 # TFT-Panel
 
-<img src=./doc/IMG_1056_resize.JPG/ width="100" height="100" border="10">
+<img src=./doc/IMG_1056_resize.JPG/ width="500"">
 
 TFT GUI Elements for ESP32 and other
 
@@ -11,17 +11,32 @@ Also suitable for other TFT displays with touch screen like CYD ("Cheap Yellow D
 Contains following classes:
 
 Button
-Radio Button Group
-Checkbox
-Checkbox Group
+Switch
 LED indicator
 Analog Meter
-Analog Bargraph hor. and vert.
+<img src=./doc/IMG_1055_resize.JPG/ width="500"">
+
 Numeric Display
+Analog Bargraph hor. and vert.
+<img src=./doc/IMG_1056_resize.JPG/ width="500"">
+
 Scrolling Oscilloscope
-Slider/Trackbar
-Switch
+<img src=./doc/IMG_1057_resize.JPG/ width="500"">
+
+Radio Button Group
 Tab Control
+<img src=./doc/IMG_1058_resize.JPG/ width="500"">
+
+Checkbox
+Checkbox Group
+Slider/Trackbar
+Tab Control
+<img src=./doc/IMG_1060_resize.JPG/ width="500"">
+
 Numeric Keypad
 Dialog Box
+<img src=./doc/IMG_1062_resize.JPG/ width="500"">
+<img src=./doc/IMG_1061_resize.JPG/ width="500"">
+
 Analog Clock
+<img src=./doc/IMG_1059_resize.JPG/ width="500"">
