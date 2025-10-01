@@ -1,8 +1,6 @@
 # TFT-Panel
 
-<img src=./doc/IMG_1056_resize.JPG/ width="500"/>
-
-TFT GUI Elements for ESP32 and other
+## TFT GUI Elements for ESP32 and other
 
 GUI elements for dual channel DC power supply as example for TFT_eSPI library and
 touch screen handling with XPT2046 or built-in touch screen of ILI9341 TFT panel.
