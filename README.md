@@ -18,7 +18,6 @@ Numeric Display, Analog Bargraph hor. and vert. with Value Set
 </p>
 
 Scrolling Oscilloscope Chart
-
 <p>
 <img src=./doc/IMG_1057_resize.JPG/ width="500"/>
 </p>
@@ -29,13 +28,13 @@ Checkbox, Radio Button Group, Tab Control, Numeric Entry with rotary encoder or 
 <img src=./doc/IMG_1060_resize.JPG/ width="500"/>
 </p>
 
-Numeric Keypad, Dialog Box, Menu List
+Numeric Keypad, Dialog Box, Menu List, Analog Clock
 <p>
 <img src=./doc/IMG_1062_resize.JPG/ width="500"/>
 <img src=./doc/IMG_1054_resize.JPG/ width="500"/>
 <img src=./doc/IMG_1061_resize.JPG/ width="500"/>
+<img src=./doc/IMG_1059_resize.JPG/ width="500"/>
 </p>
 
-Analog Clock
 
-<img src=./doc/IMG_1059_resize.JPG/ width="500"/>
+
