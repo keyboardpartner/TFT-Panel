@@ -8,7 +8,7 @@ Also suitable for other TFT displays with touch screen like CYD ("Cheap Yellow D
 
 All elements are scalable and may be placed anywhere. Demo with display 320x240 px.
 
-###Contains following classes:
+### Contains following classes:
 
 Button, Switch, LED indicator, Analog Meter
 
