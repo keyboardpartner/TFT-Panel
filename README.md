@@ -1,5 +1,7 @@
-<img src=./doc/IMG_1056_resize.JPG/>
 # TFT-Panel
+
+<img src=./doc/IMG_1056_resize.JPG/ width="100" height="100" border="10">
+
 TFT GUI Elements for ESP32 and other
 
 GUI elements for dual channel DC power supply as example for TFT_eSPI library and
