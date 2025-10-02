@@ -6,7 +6,7 @@ GUI elements for dual channel DC power supply as example for [TFT_eSPI library](
 touch screen handling with XPT2046 or built-in touch screen of ILI9341 TFT panel.
 Also suitable for other TFT displays with touch screen like CYD ("Cheap Yellow Display", [ESP32-2432S028R](https://randomnerdtutorials.com/cheap-yellow-display-esp32-2432s028r/)) 
 
-All elements are scalable and may be placed anywhere. Demo with display 320x240 px. All GUI elements may be disabled/greyed out on command. Analog Meter and clock widgets modified for execution speed and scalability.
+All elements are scalable and may be placed anywhere. Demo with display 320x240 px. All GUI elements may be disabled/greyed out on command, useful for inactive controls (for example outside of dialog box or menu list). Analog Meter and clock widgets modified for execution speed and scalability.
 
 The example is #define'd for CYD , it provides a built-in web server (AP mode on 192.168.4.1). Board type **BOARD_CYD** (cheap yellow display) or **BOARD_OA** (homemade) are defined in *platformio.ini*, switch environment in Platformio accordingly. Hardware defines are located in *hwdefs.h*, other defines in *global_vars.h*. Environment will set pin defines for each board.
 
