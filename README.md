@@ -8,6 +8,10 @@ Also suitable for other TFT displays with touch screen like CYD ("Cheap Yellow D
 
 All elements are scalable and may be placed anywhere. Demo with display 320x240 px. All GUI elements may be disabled/greyed out on command. Analog Meter and clock widgets modified for execution speed and scalability.
 
+The example is #define'd for CYD , it provides a built-in web server (AP mode on 192.168.4.1). Board type **BOARD_CYD** (cheap yellow display) or **BOARD_OA** (homemade) are defined in *platformio.ini*, switch environment in Platformio accordingly. Hardware defines are located in *hwdefs.h*, other defines in *global_vars.h*. Environment will set pin defines for each board.
+
+The CYD uses a touch controller pinout different to TFT_eSPI default, so a separate driver for XPT2046 touch controller is loaded here (see *platformio.ini*).
+
 ### Contains following classes:
 
 Button, Switch, LED indicator, Analog Meter,
