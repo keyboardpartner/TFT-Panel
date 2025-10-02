@@ -11,13 +11,13 @@ All elements are scalable and may be placed anywhere. Demo with display 320x240 
 ### Contains following classes:
 
 Button, Switch, LED indicator, Analog Meter,
-Numeric Display, Analog Bargraph hor. and vert. with Value Set 
+Numeric Display, Analog Bargraph horizontal with Value Set Point (triangle) by touch
 <p>
 <img src=./doc/IMG_1055_resize.JPG/ width="400"/>
 <img src=./doc/IMG_1056_resize.JPG/ width="400"/>
 </p>
 
-Scrolling Oscilloscope Chart
+Scrolling Oscilloscope Chart, Analog Bargraph vertical with Value Set Point (triangle) by touch
 <p>
 <img src=./doc/IMG_1057_resize.JPG/ width="400"/>
 </p>
