@@ -1,6 +1,6 @@
 # TFT-Panel
 
-### TFT GUI Elements for ESP32 and other
+### TFT GUI Elements for ESP32 and Other
 
 GUI elements for dual channel DC power supply as example for [TFT_eSPI library](https://github.com/Bodmer/TFT_eSPI) and
 touch screen handling with XPT2046 or built-in touch screen of ILI9341 TFT panel.
@@ -12,7 +12,9 @@ The example is #define'd for CYD , it provides a built-in web server (AP mode on
 
 The CYD uses a touch controller pinout different to TFT_eSPI default, so a separate driver for XPT2046 touch controller is loaded here (see *platformio.ini*).
 
-### Contains following classes:
+**TODO:** Touch calibration routine for CYD with separate XPT2046 driver.
+
+### Classes Provided
 
 Button, Switch, LED indicator, Analog Meter,
 Numeric Display, Analog Bargraph horizontal with maximum hold (red line) and optional value set point (triangle) by touch
