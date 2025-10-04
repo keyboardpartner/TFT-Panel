@@ -115,11 +115,11 @@
   writedata(0x0F);
 
   writecommand(ILI9341_SLPOUT);    //Exit Sleep
- 
+
   end_tft_write();
   delay(120);
   begin_tft_write();
-  
+
   writecommand(ILI9341_DISPON);    //Display on
 
 }
@@ -188,6 +188,9 @@ writedata(0x27);
 writecommand(0xF2); // 3Gamma Function Disable
 writedata(0x00);
 
+// Gamma setting removed for better colors on CYD - cm 7/25
+
+/*
 writecommand(ILI9341_GAMMASET); //Gamma curve selected
 writedata(0x01);
 
@@ -224,6 +227,7 @@ writedata(0x0F);
 writedata(0x3F);
 writedata(0x3F);
 writedata(0x0F);
+*/
 
 writecommand(ILI9341_PASET);
 writedata(0x00);
