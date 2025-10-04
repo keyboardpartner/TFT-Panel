@@ -14,7 +14,7 @@ The CYD uses a touch controller pinout different to TFT_eSPI default, so a separ
 
 ### Tips for Cheap Yellow Display
 
-The CYD needs the **ILI9341_2_DRIVER** and some *#define*s set to work properly. See *platformio.ini* for details. The display used for evaluation needed **SPI_READ_FREQUENCY** reduced from 20000000 to 10000000 to show correct colors. Also, the Gamma values provided in original *ILI9341_Init.h* from TFT_eSPI package show weak and blurried colors. Disabling the Gamma setup will yield much better color rendition. Replace the *ILI9341_Init.h* file in *.pio/libdeps/ESP32_CYD/TFT_eSPI/TFT_Drivers* with the file provided.
+The CYD needs the **ILI9341_2_DRIVER** and some *#define*s set to work properly. See *platformio.ini* for details. The display used for evaluation needed **SPI_READ_FREQUENCY** reduced from 20000000 to 10000000 to show correct colors from screen area read. Also, the Gamma values provided in original *ILI9341_Init.h* from TFT_eSPI package show weak and blurried colors. Disabling the Gamma setup will yield much better color rendition. Replace the *ILI9341_Init.h* file in *.pio/libdeps/ESP32_CYD/TFT_eSPI/TFT_Drivers* with the file provided.
 
 ### Classes Provided
 
