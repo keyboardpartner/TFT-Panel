@@ -77,11 +77,6 @@
 #define NUM_POS_X (DISPLAY_W - NUMERICS_WIDTH + 2)  // Numeric display X position
 #define NUM_POS_Y (DISPLAY_H - NUMERICS_HEIGHT + 2) // Numeric display Y position
 
-// TouchProvider class for handling touch events as a common provider for all widgets
-// This allows the widgets to access touch events through a shared TouchProvider instance
-// since tft->getTouch(&tx, &ty) is time-consuming and no longer used directly
-TouchProvider touchProvider = TouchProvider(&tft); // Initialize touch provider with TFT_eSPI object
-
 // Objects used in the GUI. Most belong to base class GUIobject and share
 // common properties and methods for handling touch events and drawing.
 
@@ -278,39 +273,6 @@ void drawBmp(const char *filename, int16_t x, int16_t y) {
     else DEBUG_PRINTLN("BMP format not recognized.");
   }
   bmpFS.close();
-}
-
-// ##############################################################################
-// TFT Touchscreen Calibration
-// ##############################################################################
-
-// This function calibrates the touchscreen and stores the calibration data in EEPROM
-void touch_calibrate() {
-#ifdef BOARD_CYD
-
-
-#else
-  if (settings.touchCalDataOK == 0x55A1) {
-    // calibration data valid
-    tft.setTouch(settings.touchCalData);
-  } else {
-    // data not valid so recalibrate
-    tft.fillScreen(TFT_BLACK);
-    tft.setTextSize(1);
-    tft.setTextColor(TFT_WHITE, TFT_BLACK);
-    tft.setTextDatum(MC_DATUM); // middle center text datum
-    tft.drawString(F("Touch corners as indicated"), DISPLAY_W / 2, DISPLAY_H / 2 - 20, 2 );
-    tft.calibrateTouch(settings.touchCalData, TFT_MAGENTA, TFT_BLACK, 15);
-    tft.setTextColor(TFT_GREEN, TFT_BLACK);
-    tft.drawString(F("Calibration complete!"), DISPLAY_W / 2, DISPLAY_H / 2, 2);
-    delay(500);
-    settings.touchCalDataOK = 0x55A1;
-    tft.setTouch(settings.touchCalData);
-    saveCredentials(); // store data
-    tft.setTextDatum(TL_DATUM); // middle center text datum
-    tft.setTextFont(1);
-  }
-#endif
 }
 
 // ##############################################################################

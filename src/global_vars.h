@@ -56,12 +56,19 @@
 #include "meterScaleDefaults.h"
 
 #include "MCP3421.h"
+#include "TouchProvider.h"
 #include <TFT_eSPI.h>
 //#include <WiFi.h>
 #include <time.h>
 
 
 TFT_eSPI tft = TFT_eSPI();       // Invoke custom library as global
+
+// TouchProvider class for handling touch events as a common provider for all widgets
+// This allows the widgets to access touch events through a shared TouchProvider instance
+// since tft->getTouch(&tx, &ty) is time-consuming and no longer used directly
+TouchProvider touchProvider = TouchProvider(&tft); // Initialize touch provider with TFT_eSPI object
+
 
 #define MY_TIMEZONE "CET-1CEST,M3.5.0/02,M10.5.0/03" // https://github.com/nayarsystems/posix_tz_db/blob/master/zones.csv
 #define MY_NTP_SERVER "de.pool.ntp.org"
@@ -314,6 +321,61 @@ int32_t adcReadRaw() {
 }
 
 // ##############################################################################
+// ########################### TOUCHSCREEN ######################################
+// ##############################################################################
+
+// TFT Touchscreen Calibration
+
+// This function calibrates the touchscreen and stores the calibration data in EEPROM
+void touch_calibrate() {
+#ifdef BOARD_CYD
+  if (settings.touchCalDataOK == 0x55A1) {
+    // calibration data valid
+    touchProvider.setTouchCYD(settings.touchCalData);
+  } else {
+    // data not valid so recalibrate
+    tft.fillScreen(TFT_BLACK);
+    tft.setTextSize(1);
+    tft.setTextColor(TFT_WHITE, TFT_BLACK);
+    tft.setTextDatum(MC_DATUM); // middle center text datum
+    tft.drawString(F("Touch corners as indicated"), DISPLAY_W / 2, DISPLAY_H / 2 - 20, 2 );
+    touchProvider.calibrateTouchCYD(settings.touchCalData, TFT_MAGENTA, TFT_BLACK, 15);
+    tft.setTextColor(TFT_GREEN, TFT_BLACK);
+    tft.drawString(F("Calibration complete!"), DISPLAY_W / 2, DISPLAY_H / 2, 2);
+    delay(500);
+    settings.touchCalDataOK = 0x55A1;
+    touchProvider.setTouchCYD(settings.touchCalData);
+    saveCredentials(); // store data
+    tft.setTextDatum(TL_DATUM); // middle center text datum
+    tft.setTextFont(1);
+  }
+#else
+  if (settings.touchCalDataOK == 0x55A1) {
+    // calibration data valid
+    tft.setTouch(settings.touchCalData);
+  } else {
+    // data not valid so recalibrate
+    tft.fillScreen(TFT_BLACK);
+    tft.setTextSize(1);
+    tft.setTextColor(TFT_WHITE, TFT_BLACK);
+    tft.setTextDatum(MC_DATUM); // middle center text datum
+    tft.drawString(F("Touch corners as indicated"), DISPLAY_W / 2, DISPLAY_H / 2 - 20, 2 );
+    tft.calibrateTouch(settings.touchCalData, TFT_MAGENTA, TFT_BLACK, 15);
+    tft.setTextColor(TFT_GREEN, TFT_BLACK);
+    tft.drawString(F("Calibration complete!"), DISPLAY_W / 2, DISPLAY_H / 2, 2);
+    delay(500);
+    settings.touchCalDataOK = 0x55A1;
+    tft.setTouch(settings.touchCalData);
+    saveCredentials(); // store data
+    tft.setTextDatum(TL_DATUM); // middle center text datum
+    tft.setTextFont(1);
+  }
+#endif
+}
+
+//##############################################################################
+//############################## HARDWARE INIT #################################
+//##############################################################################
 
 void hardwareInit() {
   Serial.begin(115200);    // For debug
@@ -348,7 +410,6 @@ void hardwareInit() {
     tft.setRotation(1);
   #endif
 
-  // Calibrate the touch screen or retrieve the scaling factors
-}
+ }
 
 #endif // GLOBALVARS_H

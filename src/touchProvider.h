@@ -7,10 +7,12 @@
 
 #ifdef BOARD_CYD
   #include <XPT2046_Touchscreen.h>
+  #define DEBUG_TOUCH   // Enable touch debug messages
 #endif
 
 #define DISPLAY_W 320     // Anzeigebereich Breite
 #define DISPLAY_H 240     // Anzeigebereich Höhe
+#define TOUCH_OFFSET 5    // Offset for touch area to compensate edge touches on CYD board
 
 // #####################################################################################
 // Addittion by cm 7/25:
@@ -25,6 +27,9 @@
 // touchProvider.checkTouch();
 // must be used in the main loop or any modal dialog wait loops
 // to check for touch events
+//
+// Provides separate touch handling for CYD board with XPT2046 touch screen
+//
 // #####################################################################################
 
 // TouchProvider class for handling touch and rotary encoder events for all widgets
@@ -40,6 +45,10 @@ public:
 	// This allows the TouchProvider to access the TFT_eSPI methods
 
 #ifdef BOARD_CYD
+  // Initialise with example calibration values so processor does not crash if setTouch() not called in setup()
+  uint16_t tcal_x0 = 290, tcal_y0 = 230;
+  float tcal_w = 3670.0 - 290.0, tcal_h = 3860.0 - 230.0;
+
   TouchProvider(TFT_eSPI* tft) : _xpt(XPT2046_CS), _xpt_spi(VSPI) {
     _tft = tft;
     tx = 0;
@@ -56,27 +65,104 @@ public:
   // https://github.com/PaulStoffregen/XPT2046_Touchscreen/
   bool checkTouch() {
     uint16_t x, y; uint8_t z;  // XPT
-
-    float xx = (XPT2046_XMAX - XPT2046_XMIN); // width XPT-Points
-    float yy = (XPT2046_YMAX - XPT2046_YMIN); // height XPT-Points
     pressed = _xpt.touched();
     if (pressed) {
       _xpt.readData(&x, &y, &z);
+      #ifdef DEBUG_TOUCH
+        Serial.print("Touch raw: x=" + String(x) + ", y=" + String(y));
+      #endif
+      if (x < tcal_x0) x = tcal_x0; // avoid invalid values
+      if (y < tcal_y0) y = tcal_y0; // avoid invalid values
       // calc position for TFT display from digitizer position
-      tx = (x / xx * DISPLAY_W) - (XPT2046_XMIN / xx * DISPLAY_W);    // TFT_HEIGHT=320
-      ty = (y / yy * DISPLAY_H) - (XPT2046_YMIN / yy * DISPLAY_H);    // TFT_WIDTH=240
+      tx = DISPLAY_W * (float(x - tcal_x0)/tcal_w);    // TFT_HEIGHT=320
+      ty = DISPLAY_H * (float(y - tcal_y0)/tcal_h);    // TFT_WIDTH=240
 
       // avoid invalid values
-      if (tx < 0) tx = 0;
-      if (ty < 0) ty = 0;
-      if (tx > DISPLAY_W-1) tx = DISPLAY_W-1;
-      if (ty > DISPLAY_H-1) ty = DISPLAY_H-1;
-      // Serial.println("Touch coordinates: " + String(tx) + ", " + String(ty));
-
+      if (tx >= DISPLAY_W) tx = DISPLAY_W-1;
+      if (ty >= DISPLAY_H) ty = DISPLAY_H-1;
+      #ifdef DEBUG_TOUCH
+        Serial.println(" mapped: tx=" + String(tx) + ", ty=" + String(ty));
+      #endif
     }
     return pressed;
   }
 
+  // Touch calibration for CYD board with XPT2046 touch screen
+  // parameters: Array of 7 uint16_t values to store the calibration parameters
+  void calibrateTouchCYD(uint16_t *parameters, uint32_t color_fg, uint32_t color_bg, uint8_t size){
+    int16_t values[] = {0,0,0,0,0,0,0,0};
+    uint16_t x, y; uint8_t z;  // XPT raw data
+    #ifdef DEBUG_TOUCH
+      Serial.println("Touch calibration");
+    #endif
+    for(uint8_t i = 0; i<4; i++){
+      _tft->fillRect(0, 0, size+1, size+1, color_bg);
+      _tft->fillRect(0, DISPLAY_H-size-1, size+1, size+1, color_bg);
+      _tft->fillRect(DISPLAY_W-size-1, 0, size+1, size+1, color_bg);
+      _tft->fillRect(DISPLAY_W-size-1, DISPLAY_H-size-1, size+1, size+1, color_bg);
+      while(_xpt.touched()) delay(10); // wait for press release
+      switch (i) {
+        case 0: // up left
+          _tft->drawLine(0, 0, 0, size, color_fg);
+          _tft->drawLine(0, 0, size, 0, color_fg);
+          _tft->drawLine(0, 0, size , size, color_fg);
+          break;
+        case 1: // bot left
+          _tft->drawLine(0, DISPLAY_H-size-1, 0, DISPLAY_H-1, color_fg);
+          _tft->drawLine(0, DISPLAY_H-1, size, DISPLAY_H-1, color_fg);
+          _tft->drawLine(size, DISPLAY_H-size-1, 0, DISPLAY_H-1 , color_fg);
+          break;
+        case 2: // up right
+          _tft->drawLine(DISPLAY_W-size-1, 0, DISPLAY_W-1, 0, color_fg);
+          _tft->drawLine(DISPLAY_W-size-1, size, DISPLAY_W-1, 0, color_fg);
+          _tft->drawLine(DISPLAY_W-1, size, DISPLAY_W-1, 0, color_fg);
+          break;
+        case 3: // bot right
+          _tft->drawLine(DISPLAY_W-size-1, DISPLAY_H-size-1, DISPLAY_W-1, DISPLAY_H-1, color_fg);
+          _tft->drawLine(DISPLAY_W-1, DISPLAY_H-1-size, DISPLAY_W-1, DISPLAY_H-1, color_fg);
+          _tft->drawLine(DISPLAY_W-1-size, DISPLAY_H-1, DISPLAY_W-1, DISPLAY_H-1, color_fg);
+          break;
+      }
+
+      // user has to get the chance to release
+      if(i>0) {
+        delay(200);
+      }
+
+      for(uint8_t j= 0; j<4; j++){
+        delay(10);
+        while(!_xpt.touched()); // wait for press
+        _xpt.readData(&x, &y, &z);
+        values[i*2  ] += x;
+        values[i*2+1] += y;
+      }
+      values[i*2  ] /= 4;
+      values[i*2+1] /= 4;
+      #ifdef DEBUG_TOUCH
+        Serial.println("Touch calibration: x=" + String(values[i*2]) + ", y=" + String(values[i*2+1]));
+      #endif
+    }
+    _tft->fillRect(DISPLAY_W-size-1, DISPLAY_H-size-1, size+1, size+1, color_bg);
+    // export parameters, if pointer valid
+    if(parameters != NULL){
+      parameters[0] = (values[0] + values[2]) / 2 + TOUCH_OFFSET; // x0
+      parameters[1] = (values[1] + values[5]) / 2 + TOUCH_OFFSET; // y0
+      parameters[2] = (values[4] + values[6]) / 2 - TOUCH_OFFSET; // x1
+      parameters[3] = (values[3] + values[7]) / 2 - TOUCH_OFFSET; // y1
+    }
+  }
+
+  // Set the touch calibration values for CYD board with XPT2046 touch screen
+  // parameters: Array of 5 uint16_t values with the calibration parameters
+  void setTouchCYD(uint16_t *parameters){
+    tcal_x0 = parameters[0];
+    tcal_y0 = parameters[1];
+    tcal_w = float(parameters[2] - parameters[0]); // touch width area
+    tcal_h = float(parameters[3] - parameters[1]); // touch height area
+    #ifdef DEBUG_TOUCH
+      Serial.println("Touch calibration: x0=" + String(tcal_x0) + ", y0=" + String(tcal_y0) + ", w=" + String(tcal_w) + ", h=" + String(tcal_h));
+    #endif
+  }
 
 #else
   TouchProvider(TFT_eSPI* tft) { _tft = tft; tx = 0; ty = 0; pressed = false; }

@@ -11,8 +11,12 @@
 // ############################################################################
 */
 
+// GUI elements for dual channel DC power supply as example for TFT_eSPI library and
+// touch screen handling with XPT2046 or built-in touch screen of ILI9341
+// Also suitable for other TFT displays with touch screen like CYD
+
 // 2.4" TFT: http://www.lcdwiki.com/res/MSP2402/2.4inch_SPI_Module_MSP2402_User_Manual_EN.pdf
-// Banner logos from: https://patorjk.com/software/taag/#p=display&c=c%2B%2B&f=Banner3
+// Comment Banner logos from: https://patorjk.com/software/taag/#p=display&c=c%2B%2B&f=Banner3
 // uint16_t color picker: https://rgbcolorpicker.com/565
 
 #define DEBUG           // Enable debugging messages
