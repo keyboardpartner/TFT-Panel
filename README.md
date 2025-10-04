@@ -16,7 +16,7 @@ The CYD uses a touch controller pinout different to TFT_eSPI default, so a separ
 
 The **ESP32-2432S028R CYD** used for evaluation has 2 USB ports and works with the **ST7789_DRIVER**. It needed the **SPI_READ_FREQUENCY** defined in *platformio.ini* environment section *[env:esp32_CYD]* reduced from 20000000 to **10000000** to read correct colors from screen area. 
 
-Other or older CYDs may need the **ILI9341_2_DRIVER** and some *#define*s set to work properly. See *platformio.ini* for details. Also, the Gamma values provided in original *ILI9341_Init.h* from TFT_eSPI package show weak and blurried colors. Disabling the Gamma setup will yield much better color rendition. Replace the *ILI9341_Init.h* file in *.pio/libdeps/ESP32_CYD/TFT_eSPI/TFT_Drivers* with the file provided. Please check if your dCYD works with the **ST7789_DRIVER** before replacing the *ILI9341_Init.h* file!
+Other or older CYDs may need the **ILI9341_2_DRIVER** and some *#define*s set to work properly. See *platformio.ini* for details. Also, the Gamma values provided in original *ILI9341_Init.h* from TFT_eSPI package show weak and blurried colors. Disabling the Gamma setup will yield much better color rendition. Replace the *ILI9341_Init.h* file in *.pio/libdeps/ESP32_CYD/TFT_eSPI/TFT_Drivers* with the file provided. Please check if your CYD works with the **ST7789_DRIVER** before replacing the *ILI9341_Init.h* file!
 
 ### Classes Provided
 
