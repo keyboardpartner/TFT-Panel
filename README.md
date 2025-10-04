@@ -12,7 +12,9 @@ The example is #define'd for CYD , it provides a built-in web server (AP mode on
 
 The CYD uses a touch controller pinout different to TFT_eSPI default, so a separate driver for XPT2046 touch controller is loaded here (see *platformio.ini*).
 
-**TODO:** Touch calibration routine for CYD with separate XPT2046 driver.
+### Tips for Cheap Yellow Display
+
+The CYD needs the **ILI9341_2_DRIVER** and some *#define*s set to work properly. See *platformio.ini* for details. The display used for evaluation needed **SPI_READ_FREQUENCY** reduced from 20000000 to 10000000 to show correct colors. Also, the Gamma values provided in ILI9341_Init.h show weak and blurried colors. Disabling the Gamma setup will yield much better color rendition. Replace the *ILI9341_Init.h* file in *.pio/libdeps/ESP32_CYD/TFT_eSPI/TFT_Drivers* with the file provided.
 
 ### Classes Provided
 
