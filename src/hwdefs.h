@@ -15,8 +15,6 @@
 #define DISPLAY_W 320     // Anzeigebereich Breite
 #define DISPLAY_H 240     // Anzeigebereich Höhe
 
-#define LED_ON 1
-#define LED_OFF 0
 #define SPKR_ON 1
 #define SPKR_OFF 0
 
@@ -25,6 +23,8 @@
 
 #ifdef BOARD_OA
   #define LED_PIN 2  // 21 bei erster Platinenversion, für Sampling-Kontrolle
+  #define LED_ON 1
+  #define LED_OFF 0
   #define TFT_LED_PIN 15
   #define SPKR_PIN 13
   #define DC_PIN_VOLTS 36 // Range ADC
@@ -48,11 +48,29 @@
 
 #ifdef BOARD_CYD
   #define LED_PIN 4 // RGB-LED, pins 17, 4, 16
+  #define LED_RED 4 // RGB-LED, pins 17, 4, 16
+  #define LED_GREEN 16 // RGB-LED, pins 17, 4, 16
+  #define LED_BLUE 17 // RGB-LED, pins 17, 4, 16
+  #define LED_ON 0
+  #define LED_OFF 1
   #define TFT_LED_PIN 21
   #define SPKR_PIN 26
-  #define DC_PIN_VOLTS LDR_PIN
+  #define DC_PIN_VOLTS 34
   #define DC_PIN_AMPS 35
   #undef ENCODER_ENABLED    // No encoder support
+
+  /*
+  // TFT-Pins in platformio.ini zugewiesen:
+  -D TFT_MISO=12
+  -D TFT_MOSI=13
+  -D TFT_SCLK=14
+  -D TFT_CS=15
+  -D TFT_DC=2
+  -D TFT_RST=-1
+  -D TFT_BL=21
+  */
+
+#else
 #endif
 
 

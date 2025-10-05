@@ -7,7 +7,7 @@
 
 #ifdef BOARD_CYD
   #include <XPT2046_Touchscreen.h>
-  #define DEBUG_TOUCH   // Enable touch debug messages
+  // #define DEBUG_TOUCH   // Enable touch debug messages
 #endif
 
 #define DISPLAY_W 320     // Anzeigebereich Breite
@@ -46,8 +46,8 @@ public:
 
 #ifdef BOARD_CYD
   // Initialise with example calibration values so processor does not crash if setTouch() not called in setup()
-  uint16_t tcal_x0 = 290, tcal_y0 = 230;
-  float tcal_w = 3670.0 - 290.0, tcal_h = 3860.0 - 230.0;
+  uint16_t tcal_x0 = XPT2046_XMIN, tcal_y0 = XPT2046_YMIN;
+  float tcal_w = XPT2046_XMAX - XPT2046_XMIN, tcal_h = XPT2046_YMAX - XPT2046_YMIN;
 
   TouchProvider(TFT_eSPI* tft) : _xpt(XPT2046_CS), _xpt_spi(VSPI) {
     _tft = tft;
@@ -57,6 +57,16 @@ public:
     _xpt_spi.begin(XPT2046_CLK, XPT2046_MISO, XPT2046_MOSI, XPT2046_CS); // defined in platformio.ini
     _xpt.begin(_xpt_spi);
     _xpt.setRotation(1); // landscape, USB ports right bottom
+  }
+
+  void reInit() {
+    _xpt_spi.begin(XPT2046_CLK, XPT2046_MISO, XPT2046_MOSI, XPT2046_CS); // defined in platformio.ini
+    _xpt.begin(_xpt_spi);
+    _xpt.setRotation(1); // landscape, USB ports right bottom
+  }
+
+  void end() {
+    _xpt_spi.end(); // free the SPI bus
   }
 
 	// Check if the touch is pressed and get the coordinates
@@ -172,6 +182,12 @@ public:
   bool checkTouch() {
     pressed = _tft->getTouch(&tx, &ty); // Get touch coordinates from the TFT display
     return pressed;
+  }
+
+  void reInit() {
+  }
+
+  void end() {
   }
 
 #endif

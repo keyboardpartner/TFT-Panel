@@ -61,6 +61,12 @@
 //#include <WiFi.h>
 #include <time.h>
 
+#include <SdFat.h>
+/*
+#include <SD.h>
+#include <FS.h>
+#include <FS.h>
+*/
 
 TFT_eSPI tft = TFT_eSPI();       // Invoke custom library as global
 
@@ -69,6 +75,14 @@ TFT_eSPI tft = TFT_eSPI();       // Invoke custom library as global
 // since tft->getTouch(&tx, &ty) is time-consuming and no longer used directly
 TouchProvider touchProvider = TouchProvider(&tft); // Initialize touch provider with TFT_eSPI object
 
+// 3 = FAT32
+#define SD_FAT_TYPE 3
+SdFat SD; // Create an instance of the SD library
+// #define SD_CS_PIN 5 // Chip Select Pin für SD-Karte, in platformio.ini definiert
+// SPI-Geschwindigkeit
+#define SPI_SPEED SD_SCK_MHZ(4)
+SPIClass SPI_SD = SPIClass(VSPI); // SPI instance for SD Card
+bool SD_OK = false; // true, wenn SD-Karte initialisiert
 
 #define MY_TIMEZONE "CET-1CEST,M3.5.0/02,M10.5.0/03" // https://github.com/nayarsystems/posix_tz_db/blob/master/zones.csv
 #define MY_NTP_SERVER "de.pool.ntp.org"
@@ -321,6 +335,47 @@ int32_t adcReadRaw() {
 }
 
 // ##############################################################################
+// ############################ TICKER OBJECTS ##################################
+// ##############################################################################
+
+// Global variables and objects
+Ticker UpdateTicker, ScopeTicker, EncoderTicker, ToggleTicker, SecondTicker;
+int update_tick = 0;
+int scope_tick = 0;
+int encoder_tick = 0;
+int toggle_tick = 0;
+int second_tick = 0;
+bool toggle_bool = false; // Toggle state for blinking text
+
+// ##############################################################################
+
+void second_tick_callback() {
+  // Callback von SecondTicker
+  second_tick += 1;
+}
+
+void toggle_tick_callback() {
+  // Callback von ToggleTicker
+  toggle_bool = !toggle_bool;
+  toggle_tick += 1;
+}
+
+void update_tick_callback() {
+  // Callback von UpdateTicker
+  update_tick += 1;
+}
+
+void scope_tick_callback() {
+  // Callback von ScopeTicker
+  scope_tick += 1;
+}
+
+void encoder_tick_callback() {
+  // Callback von EncoderTicker
+  touchProvider.encoderTick();
+}
+
+// ##############################################################################
 // ########################### TOUCHSCREEN ######################################
 // ##############################################################################
 
@@ -377,9 +432,48 @@ void touch_calibrate() {
 //############################## HARDWARE INIT #################################
 //##############################################################################
 
+// This implementation uses the VSPI interface for both the SD card and the Touchscreen
+// The Touchscreen SPI is deinitialized when the SD card is used and reinitialized afterwards
+
+// Initialize SPI for SD card and end Touchscreen SPI to free the bus
+bool start_SD() {
+  DEBUG_PRINTLN("End XPT SPI");
+  #ifdef BOARD_CYD
+    touchProvider.end(); // Deinitialize touch provider SPI to free it for SD card
+  #endif
+  // SPI bus must be deinitialized before initializing it, otherwise
+  // it might throw a "addApbChangeCallback(): duplicate func" exception
+  DEBUG_PRINTLN("Start SD SPI");
+  SPI_SD.begin(SD_SCK, SD_MISO, SD_MOSI, SD_CS_PIN); // SCK, MISO, MOSI, SS
+  if (!SD_OK) {
+    DEBUG_PRINTLN("Start SD FAT");
+    SD_OK = SD.begin(SdSpiConfig(SD_CS_PIN, SHARED_SPI, SD_SCK_MHZ(10), &SPI_SD));
+  }
+  return SD_OK;
+}
+
+// End SPI for SD card and reinitialize Touchscreen SPI
+void end_SD() {
+  DEBUG_PRINTLN("End SD, Start XPT SPI");
+  SPI_SD.end(); // Deinitialize SPI for SD card to free it for Touchscreen
+  #ifdef BOARD_CYD
+    touchProvider.reInit(); // Re-Initialize touch provider SPI after SD card use
+  #endif
+}
+
 void hardwareInit() {
   Serial.begin(115200);    // For debug
+
+  #ifdef DEBUG_STARTUP
+    spkrOKbeep();
+    delay(2000); // Zeit für Debug-Ausgaben
+    DEBUG_PRINTLN("Setup started");
+  #endif
+
   pinMode(TFT_LED_PIN, OUTPUT);
+  digitalWrite(XPT2046_CS, HIGH); // Touch controller chip select (if used)
+  digitalWrite(TFT_CS, HIGH); // TFT screen chip select
+  digitalWrite(SD_CS_PIN, HIGH); // SD card chips select, must use GPIO 5 (ESP32 SS)
   digitalWrite(TFT_LED_PIN, true);
   #ifdef SPKR_PIN
     pinMode(SPKR_PIN, OUTPUT);
@@ -403,13 +497,68 @@ void hardwareInit() {
   tv.tv_sec = mktime(timeinfo);
   tv.tv_usec = 0;
   settimeofday(&tv, NULL); // set time on system
+
   tft.init();
   #ifdef BOARD_OA
     tft.setRotation(3);
   #else
     tft.setRotation(1);
   #endif
+  tft.fillScreen(TFT_BLUE);
+  tft.setCursor(0, 4);
+  tft.setTextColor(TFT_WHITE, TFT_BLUE);
+  tft.setTextSize(1);
+  tft.println(F("TFT Panel initialised"));
 
- }
+  tft.println(F("Start SD SPI..."));
+
+  if (start_SD()) {
+    DEBUG_PRINTLN("SD Init done");
+    tft.println(F("SD Init done"));
+    // Dateien im Verzeichnis ausgeben
+    SD.ls(LS_DATE | LS_SIZE | LS_R);
+   } else {
+    DEBUG_PRINTLN("SD Init failed!");
+    tft.println(F("ERROR: SD Init failed or card not present!"));
+  }
+  end_SD(); // Reinitialize Touch SPI
+
+  tft.println(F("Install tickers..."));
+  SecondTicker.attach_ms(1000, second_tick_callback);
+  UpdateTicker.attach_ms(UPDATETIMER_MS, update_tick_callback);
+  ScopeTicker.attach_ms(SCOPETIMER_MS, scope_tick_callback);
+  ToggleTicker.attach_ms(333, toggle_tick_callback); // Toggle every 333 ms, e.g. for blinking text
+  toggle_bool = false;
+  #ifdef ENCODER_ENABLED
+    pinMode(ENCA_PIN, INPUT_PULLUP);
+    pinMode(ENCB_PIN, INPUT_PULLUP);
+    pinMode(ENCBTN_PIN, INPUT_PULLUP);
+    EncoderTicker.attach_ms(2, encoder_tick_callback);
+  #endif
+
+  tft.println(F("Loading credentials..."));
+  loadCredentials();
+  touch_calibrate();  // falls keine Kalibrierdaten vorhanden, neu anlegen
+
+  // Initialize SPIFFS
+  if(SPIFFS.begin(true)){
+    DEBUG_PRINTLN("Mounting SPIFFS done.");
+    tft.println(F("SPIFFS mounted successfully."));
+  } else {
+    DEBUG_PRINTLN("Error occurred while mounting SPIFFS");
+    tft.println(F("ERROR: SPIFFS not mounted!"));
+  }
+  if (adcPresent == 0) {
+    tft.println(F("No I2C Device found, internal ADC used")); // Warning, no I2C device found
+  }
+  tft.println(F("Hardware Init done"));
+
+  if (start_SD()) {
+    SD.ls(LS_DATE | LS_SIZE | LS_R);  // LS_R recursive
+  }
+  end_SD(); // Reinitialize Touch SPI
+
+
+}
 
 #endif // GLOBALVARS_H

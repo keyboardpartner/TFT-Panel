@@ -34,49 +34,6 @@
 #endif
 
 
-
-
-// ##############################################################################
-// ############################## G L O B A L S #################################
-// ##############################################################################
-
-// Global variables and objects
-Ticker UpdateTicker, ScopeTicker, EncoderTicker, ToggleTicker, SecondTicker;
-int update_tick = 0;
-int scope_tick = 0;
-int encoder_tick = 0;
-int toggle_tick = 0;
-int second_tick = 0;
-bool toggle_bool = false; // Toggle state for blinking text
-
-// ##############################################################################
-
-void second_tick_callback() {
-  // Callback von SecondTicker
-  second_tick += 1;
-}
-
-void toggle_tick_callback() {
-  // Callback von ToggleTicker
-  toggle_bool = !toggle_bool;
-  toggle_tick += 1;
-}
-
-void update_tick_callback() {
-  // Callback von UpdateTicker
-  update_tick += 1;
-}
-
-void scope_tick_callback() {
-  // Callback von ScopeTicker
-  scope_tick += 1;
-}
-
-void encoder_tick_callback() {
-  // Callback von EncoderTicker
-  touchProvider.encoderTick();
-}
-
 // ##############################################################################
 //
 //   ######  ######## ######## ##     ## ########
@@ -91,43 +48,11 @@ void encoder_tick_callback() {
 
 void setup(void) {
   hardwareInit();
-  #ifdef DEBUG_STARTUP
-    spkrOKbeep();
-    delay(2000); // Zeit für Debug-Ausgaben
-    DEBUG_PRINTLN("Setup started");
-  #endif
-
-  SecondTicker.attach_ms(1000, second_tick_callback);
-  UpdateTicker.attach_ms(UPDATETIMER_MS, update_tick_callback);
-  ScopeTicker.attach_ms(SCOPETIMER_MS, scope_tick_callback);
-  #ifdef ENCODER_ENABLED
-    pinMode(ENCA_PIN, INPUT_PULLUP);
-    pinMode(ENCB_PIN, INPUT_PULLUP);
-    pinMode(ENCBTN_PIN, INPUT_PULLUP);
-    EncoderTicker.attach_ms(2, encoder_tick_callback);
-  #endif
-
-  ToggleTicker.attach_ms(333, toggle_tick_callback); // Toggle every 333 ms, e.g. for blinking text
-  toggle_bool = false;
-
-  loadCredentials();
-  touch_calibrate();  // falls keine Kalibrierdaten vorhanden, neu anlegen
-
- // initDialogs(&tft, &touchProvider);
-
-  // Initialize SPIFFS
-  if(SPIFFS.begin(true)){
-    DEBUG_PRINTLN("Mounting SPIFFS done.");
-  } else {
-    DEBUG_PRINTLN("Error occurred while mounting SPIFFS");
-    dialogBox.modalDlg("SPIFFS not mounted!", "", 2); // Warning, SPIFFS not mounted
-  }
+  delay(2000);
+  // Optional: Display a splash screen from SPIFFS
   tft.fillScreen(TFT_BLACK);
-
-
   drawBmp("/splash.bmp", 0, 8);
   delay(500);
-  DEBUG_PRINTLN("Init done.");
 
   if (adcPresent == 0) {
     dialogBox.modalDlg("No I2C Device found,", "Internal ADC used", 2); // Warning, no I2C device found

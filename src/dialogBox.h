@@ -1,3 +1,9 @@
+/**
+ @file dialogbox.h
+ @brief This is a class library for dialog boxes with messages and up to 2 buttons
+ @author Carsten Meyer <info@keyboardpartner.de>
+*/
+
 #ifndef DIALOGBOX_H
 #define DIALOGBOX_H
 
