@@ -20,6 +20,9 @@ Other or older CYDs (without USB-C) may need the **ILI9341_2_DRIVER** instead of
 
 For various CYD versions, also see [ESP32 mit 2,8 Zoll TFT (Cheap Yel­low Display)](https://hartmut-waller.info/arduinoblog/esp32-mit-28-zoll-tft/) from Hartmut Waller and [CYD Touch Programming](http://www.geochecker.gps-cache.de/esp8266-esp32/esp32-2432s028-cheap-yellow-display-touchscreen-programmierung-platformio-library-xpt2046-digitizer.htm) from Oliver Kuhlemann (both pages in german).
 
+Other hardware quirks are [mentioned here](https://github.com/hexeguitar/ESP32_TFT_PIO), like modifying the the completely useless LDR circuit or reducing the much too high audio gain. This is a fine example how chinese manufacturers copy & paste even obvious faults and errors.
+
+
 ### Using the SD card on CYD
 
 In order to use the **SD card** in conjunction with the TFT_eSPI library, a certain amount of care is required. The XTP2046 on CYD uses different SPI pins than those expected by the TFT_eSPI library, so the built-in touch functions of TFT_eSPI cannot be used. For the CYD, the separate [XTP2046 library from Paul Stoffregen](https://github.com/PaulStoffregen/XPT2046_Touchscreen) is loaded. We use the ESP32 VSPI for **both SD card and touch controller**. This works fine when SPI pins are switched between SD card and touch usage. See *hardwareInit()* function in *global_vars.h* for details.
