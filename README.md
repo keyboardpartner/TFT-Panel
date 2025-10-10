@@ -1,6 +1,8 @@
 # TFT-Panel
 
-### TFT GUI Elements for ESP32 and Other, PlatformIO VSCODE IDE
+## TFT GUI Elements for ESP32 and Other
+
+### Project for PlatformIO VSCODE IDE
 
 GUI elements for dual channel DC power supply as example for [TFT_eSPI library](https://github.com/Bodmer/TFT_eSPI) and
 touch screen handling with XPT2046 or built-in touch screen of TFT panel. 
